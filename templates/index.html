@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>ZOF — Zero Of Functions</title>
+<link rel="stylesheet" href="/static/tstyle.css">
+</head>
+<body>
+<div class="container">
+<h1>ZOF — Zero Of Functions</h1>
+<form method="post">
+<label>f(x): <input name="expr" required placeholder="e.g. x**3 - x -2"></label>
+<label>Method:
+<select name="method" onchange="showFields(this.value)">
+<option value="bisection">Bisection</option>
+<option value="regula">Regula Falsi</option>
+<option value="secant">Secant</option>
+<option value="newton">Newton-Raphson</option>
+<option value="fixed">Fixed Point</option>
+<option value="modified_secant">Modified Secant</option>
+</select>
+</label>
+
+<div id="intervals">
+<label>a: <input name="a"></label>
+<label>b: <input name="b"></label>
+</div>
+
+<div id="two_guesses" style="display:none;">
+<label>x0: <input name="x0"></label>
+<label>x1: <input name="x1"></label>
+</div>
+
+<div id="single_guess" style="display:none;">
+<label>x0: <input name="x0"></label>
+</div>
+
+<div id="fixed_g" style="display:none;">
+<label>g(x): <input name="g_expr" placeholder="e.g. (x+2/x**2)"></label>
+</div>
+
+<div id="delta_field" style="display:none;">
+<label>delta: <input name="delta" value="0.01"></label>
+</div>
+
+<label>Tolerance: <input name="tol" value="1e-6"></label>
+<label>Max iterations: <input name="max_iter" value="50"></label>
+<button type="submit">Compute</button>
+</form>
+
+{% if result %}
+{% if result.error %}
+<div class="error">Error: {{ result.error }}</div>
+{% else %}
+<h2>Result</h2>
+<p>Root: {{ result.root }}</p>
+<p>|f(root)|: {{ result.ferr }}</p>
+<p>Iterations: {{ result.iters }}</p>
+{% if table %}
+<h3>Iteration table</h3>
+<table>
+<thead><tr>{% for h in table.headers %}<th>{{h}}</th>{% endfor %}</tr></thead>
+<tbody>
+{% for row in table.rows %}
+<tr>{% for cell in row %}<td>{{cell}}</td>{% endfor %}</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+{% endif %}
+{% endif %}
+
+</div>
+<script>
+function showFields(val){
+  document.getElementById('intervals').style.display = (val==='bisection'||val==='regula')?'block':'none';
+  document.getElementById('two_guesses').style.display=(val==='secant')?'block':'none';
+  document.getElementById('single_guess').style.display=(val==='newton'||val==='fixed'||val==='modified_secant')?'block':'none';
+  document.getElementById('fixed_g').style.display=(val==='fixed')?'block':'none';
+  document.getElementById('delta_field').style.display=(val==='modified_secant')?'block':'none';
+}
+showFields(document.querySelector('select[name="method"]').value);
+</script>
+</body>
+</html>
