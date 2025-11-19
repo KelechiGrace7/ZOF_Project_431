@@ -1,4 +1,4 @@
-Name: 
-Matric number: 
-Live URL: 
-GitHub repo: 
+Name: Iheme Kelechi Grace
+Matric number: 22CG031866
+Live URL: https://zof-project-431.onrender.com
+GitHub repo: https://github.com/KelechiGrace7/ZOF_Project_431
